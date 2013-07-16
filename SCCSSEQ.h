@@ -21,7 +21,16 @@ struct DFS_node{
 	int d; //discovery time
 	int f; //finishing time
 	struct DFS_node * p;
+
+	DFS_node( Argument* _argument ) {
+		this->argument = _argument;
+		this->color = 0;
+		this->p = NULL;
+	}
 };
+
+list<SCC*> SCCSSEQ(AF gamma);
+stack<DFS_node*> initialize_stack(AF gamma);
 
 
 #endif /* SCCSSEQ_H_ */
