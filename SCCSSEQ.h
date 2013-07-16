@@ -30,7 +30,7 @@ struct DFS_node{
 };
 
 list<SCC*> SCCSSEQ(AF gamma);
-list<SCC*> DFS(AF gamma);
+list<SCC*> DFS(stack<DFS_node*> S);
 list <SCC*> DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time);
 stack<DFS_node*> initialize_stack(AF gamma);
 
