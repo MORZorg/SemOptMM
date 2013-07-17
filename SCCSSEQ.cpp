@@ -13,6 +13,7 @@ list<SCC*> SCCSSEQ(AF gamma){
 	cout<<"DFS first start"<<endl;
 	DFS(G,true);
 	cout<<"DFS second start"<<endl;
+
 	DFS(G,false);
 	cout<<"DFS finish"<<endl;
 
@@ -60,11 +61,14 @@ void remove_stack(stack<DFS_node*> * S, DFS_node * remove){
 }
 
 
-stack<DFS_node*> sort_stack(stack<DFS_node*> S){
+stack<DFS_node*> sort_stack(stack<DFS_node*> S){//e azzero colore
+	DFS_node * temp_node;
 	stack<DFS_node*> stack;
 	list<DFS_node*> list;
 	while(!S.empty()){
-		list.push_back(S.top());
+		temp_node=S.top();
+		temp_node->color=0;
+		list.push_back(temp_node);
 		S.pop();
 	}
 	list.sort(compareTime);
@@ -92,6 +96,7 @@ void DFS(stack<DFS_node*> S, bool first){
 	}
 	while(!S.empty()){
 		u = S.top();
+		cout << (u->argument->getName())<<endl;
 		S.pop();
 		if( u->color == 0 )
 			DFS_visit(G,u,&time, first);
@@ -103,7 +108,7 @@ void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first){
 	(*time)++;
 	u->d = *time;
 	u->color = 1;//gray
-
+	cout << (u->argument->getName())<<" set gray"<<endl;
 	DFS_node * temp;
 
 	SetArguments * adj;
@@ -116,6 +121,7 @@ void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first){
 
 	for(SetArgumentsIterator it = adj->begin(); it != adj->end(); it++ ){
 		temp = get_DFS_node(S, **it );
+		cout << (temp->argument->getName())<<" sub"<<endl;
 		if( temp->color == 0 ){
 			temp->p = u;
 			DFS_visit(S,temp,time,first);
@@ -123,6 +129,7 @@ void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first){
 	}
 
 	u->color = 2;
+	cout << (u->argument->getName())<<" set black"<<endl;
 	(*time)++;
 	u->f = *time;
 }

@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
 	//debug = true; // more verbose
 	debug=false;
-	inputfile = string("test-input/scc-test.dl");
+	inputfile = string("test-input/esempio-test.dl");
 	AF framework = AF();
 	if (!framework.readFile(inputfile))
 	{
