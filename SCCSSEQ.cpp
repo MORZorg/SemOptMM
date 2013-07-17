@@ -84,9 +84,10 @@ bool compareTime(DFS_node* a,DFS_node* b){
 }
 
 void DFS(stack<DFS_node*> S, bool first){
-
+	list<SCC*> SCCSSEQ;
 	int time = 0;
 	DFS_node* u;
+	SCC scc_tmp;
 
 	//copio la stack S, in modo tale che anche se estraiamo gli elementi da S, la stack G rimane inalterata	
 	stack<DFS_node*> G = stack<DFS_node*>(S);
@@ -94,21 +95,31 @@ void DFS(stack<DFS_node*> S, bool first){
 	if(!first){
 		S=sort_stack(S);
 	}
+	int scc_num = 0;
 	while(!S.empty()){
 		u = S.top();
-		cout << (u->argument->getName())<<endl;
 		S.pop();
-		if( u->color == 0 )
-			DFS_visit(G,u,&time, first);
+		if( u->color == 0 ){
+			cout << "SCC " << scc_num++ << ": ";
+			//cout << u->argument->getName() << " ";
+
+			scc_tmp=DFS_visit(G,u,&time, first);
+			if(!first){
+				SCCSSEQ.push_back(&scc_tmp);
+				cout<<scc_tmp.set<<endl;
+			}
+			cout << endl;
+		}
 	}
 
 }
 
-void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first){
+SCC DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first){
+	SCC tmp_scc, tmp_scc2;
 	(*time)++;
 	u->d = *time;
 	u->color = 1;//gray
-	cout << (u->argument->getName())<<" set gray"<<endl;
+	//cout << (u->argument->getName())<<" set gray"<<endl;
 	DFS_node * temp;
 
 	SetArguments * adj;
@@ -121,17 +132,24 @@ void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first){
 
 	for(SetArgumentsIterator it = adj->begin(); it != adj->end(); it++ ){
 		temp = get_DFS_node(S, **it );
-		cout << (temp->argument->getName())<<" sub"<<endl;
+		//cout << (temp->argument->getName())<<" sub"<<endl;
 		if( temp->color == 0 ){
 			temp->p = u;
-			DFS_visit(S,temp,time,first);
+			tmp_scc2=DFS_visit(S,temp,time,first);
+			if(!first){
+				tmp_scc.set.setunion(&(tmp_scc2.set),&(tmp_scc.set));
+			}
 		}
 	}
 
 	u->color = 2;
-	cout << (u->argument->getName())<<" set black"<<endl;
+	if (!first){
+		tmp_scc.set.add_Argument(u->argument);
+		cout << u->argument->getName() <<" ";
+	}
 	(*time)++;
 	u->f = *time;
+	return tmp_scc;
 }
 
 DFS_node* get_DFS_node(stack<DFS_node*> S, Argument  a ){

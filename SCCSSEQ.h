@@ -39,7 +39,7 @@ struct SCC{
 bool compareTime(DFS_node* a,DFS_node* b);
 list<SCC*> SCCSSEQ(AF gamma);
 void DFS(stack<DFS_node*> S, bool first);
-void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first);
+SCC DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first);
 stack<DFS_node*> initialize_stack(AF gamma);
 DFS_node* get_DFS_node(stack<DFS_node*> S, Argument a );
 void remove_stack(stack<DFS_node*> * S, DFS_node * remove);
