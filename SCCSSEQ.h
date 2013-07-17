@@ -7,6 +7,9 @@
 
 #ifndef SCCSSEQ_H_
 #define SCCSSEQ_H_
+#include "Argument.h"
+#include <list>
+#include <stack>
 
 //DFS();
 //DFS_visit()
@@ -27,12 +30,18 @@ struct DFS_node{
 		this->color = 0;
 		this->p = NULL;
 	}
+	DFS_node(){}
 };
 
+struct SCC{
+	SetArguments set;
+};
+bool compareTime(DFS_node* a,DFS_node* b);
 list<SCC*> SCCSSEQ(AF gamma);
-list<SCC*> DFS(stack<DFS_node*> S);
-list <SCC*> DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time);
+void DFS(stack<DFS_node*> S, bool first);
+void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first);
 stack<DFS_node*> initialize_stack(AF gamma);
-
+DFS_node* get_DFS_node(stack<DFS_node*> S, Argument a );
+void remove_stack(stack<DFS_node*> * S, DFS_node * remove);
 
 #endif /* SCCSSEQ_H_ */

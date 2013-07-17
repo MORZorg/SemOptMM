@@ -4,78 +4,151 @@
  *  Created on: 15/lug/2013
  *      Author: ilariamartinelli
  */
+#include "SCCSSEQ.h"
+#include <iostream>
 
 list<SCC*> SCCSSEQ(AF gamma){
-
+	list<SCC*> list_SCC;
 	stack<DFS_node*> G = initialize_stack(gamma);
-	DFS(G);
+	cout<<"DFS first start"<<endl;
+	DFS(G,true);
+	cout<<"DFS second start"<<endl;
+	DFS(G,false);
+	cout<<"DFS finish"<<endl;
 
-	// Faccio una copia di G
-	stack<DFS_node*> Gt = G;
-	// l'idea è quella di iterare su G e invertire per ogni DFS_node gli attaccanti con gli attaccati, 
-	// alla fine G sarà vuota però in Gt avremo gli elementi con i lati girati. E' corretto!?
+
+	DFS_node* u;
+	stack<DFS_node*> root = stack<DFS_node*>(G);
 	while(!G.empty()){
 		u = G.top();
 		G.pop();
-		SetArguments attackers = u.argument->getAttackers();
-		SetArguments attacked = u.argument->getAttacks();
-		u.argument.
+		if( u->p != NULL ){
+			remove_stack(&root,u);
+		}
 	}
+	cout<<"1* while finish"<<endl;
+	int k=0;
+	while(!root.empty()){//puntatori??
+		cout<<k++<<endl;
+		DFS_node* temp = new DFS_node();
+		SCC *scc = new SCC();
+		temp=root.top();
+		do{
+			scc->set.add_Argument(temp->argument);
+			cout << scc->set<<endl;
+			temp=temp->p;
+		}while(temp!=NULL);
+		cout<<"fine una root"<<endl;
+		root.pop();
+		list_SCC.push_back(scc);
+	}
+	cout<<"2* while"<<endl;
 
-
+}
+void remove_stack(stack<DFS_node*> * S, DFS_node * remove){
+	stack<DFS_node*> temp;
+	while(!S->empty()){
+		if(S->top() != remove){//funziona davvero?
+			temp.push(S->top());
+		}
+		S->pop();
+	}
+	while(!temp.empty()){
+		S->push(temp.top());
+		temp.pop();
+	}
 }
 
 
-list<SCC*> DFS(stack<DFS_node*> S){
+stack<DFS_node*> sort_stack(stack<DFS_node*> S){
+	stack<DFS_node*> stack;
+	list<DFS_node*> list;
+	while(!S.empty()){
+		list.push_back(S.top());
+		S.pop();
+	}
+	list.sort(compareTime);
+	while(!list.empty()){
+		stack.push(list.back());
+		list.pop_back();
+	}
+	return stack;
+}
+
+bool compareTime(DFS_node* a,DFS_node* b){
+    return (a->f)>(b->f);
+}
+
+void DFS(stack<DFS_node*> S, bool first){
 
 	int time = 0;
 	DFS_node* u;
 
 	//copio la stack S, in modo tale che anche se estraiamo gli elementi da S, la stack G rimane inalterata	
-	stack<DFS_node*> G = S;
+	stack<DFS_node*> G = stack<DFS_node*>(S);
 
+	if(!first){
+		S=sort_stack(S);
+	}
 	while(!S.empty()){
 		u = S.top();
 		S.pop();
-		if( u.color == 0 )	
-			DFS_visit(G,u,&time);
+		if( u->color == 0 )
+			DFS_visit(G,u,&time, first);
 	}
 
 }
 
-list <SCC*> DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time){
-	time++;
-	u.d = time;
-	u.color = 1;
+void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first){
+	(*time)++;
+	u->d = *time;
+	u->color = 1;//gray
 
-	SetArgument adj_u, attackers, attack;
-	attackers = u.get_attackers();
-	attacks = u.get_attacks();
-	attackers.setunion(&attacks, &adj_u);
+	DFS_node * temp;
 
-	for(SetArgumentsIterator it = adj_u.begin(); it != adj_u.end(); it++ ){
-		if( (*it)->color == 0 ){
-			(*it)->p = u;
-			DFS_visit(S,it,time);
+	SetArguments * adj;
+	if(first){
+		adj = u->argument->get_attacks();
+	}
+	else{
+		adj = u->argument->get_attackers();
+	}
+
+	for(SetArgumentsIterator it = adj->begin(); it != adj->end(); it++ ){
+		temp = get_DFS_node(S, **it );
+		if( temp->color == 0 ){
+			temp->p = u;
+			DFS_visit(S,temp,time,first);
 		}
 	}
 
-	u.color = 2;
-	time++;
-	u.f = time;
+	u->color = 2;
+	(*time)++;
+	u->f = *time;
+}
+
+DFS_node* get_DFS_node(stack<DFS_node*> S, Argument  a ){
+	DFS_node * u;
+	while(!S.empty()){
+		u = S.top();
+		S.pop();
+		if( *(u->argument) == a )
+			return u;
+	}
+	return NULL;
 }
 
 
 stack<DFS_node*> initialize_stack(AF gamma){
 
-	SetArguments args;
-	stack<DFS_node*> stack = stack<DFS_node*>();
+	SetArguments* args;
+	stack<DFS_node*> stack;
 
-	arg = gamma.get_arguments();
+	args = gamma.get_arguments();
 
-	for(SetArgumentsIterator it = arg.begin(); it != arg.end(); it++){
-		 stack = push(*it);
+	for(SetArgumentsIterator it = args->begin(); it != args->end(); it++){
+		stack.push( new DFS_node(*it));
 	}
-
+	return stack;
 }
 

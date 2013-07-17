@@ -45,6 +45,9 @@ HG("Version: "_PUBLIC_RELEASE);
 #include "Argument.h"
 #include "Preferred.h"
 
+#include "SCCSSEQ.h"
+
+
 extern bool debug;
 extern bool externalsat;
 extern string satsolver;

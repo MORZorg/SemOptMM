@@ -23,36 +23,8 @@ time_t start;
 
 #ifndef UNIT_TEST
 
-SetArguments get_not_attacked_nodes(SetArguments C, SetArguments I){
-	SetArguments N, attackers, intersect, result;
-	C.clone(&N);
-	for (SetArgumentsIterator it = C.begin(); it != C.end(); it++){
-		attackers=(*it)->get_attackers();
-		attackers.intersect(&I, &intersect);
-		for (SetArgumentsIterator it = intersect.begin(); it != intersect.end(); it++){
-			if (N.exists((*it)))
-				N.remove((*it));
-		}
-		if(N.empty()) break;//improvement :)
-	}
-	return N;
-}
 
-void grounded(AF gamma, SetArguments C, Preferred *e, SetArguments *I) {
-	SetArguments N;
-	e=Preferred();
-	I=gamma.get_arguments();
-	N=get_not_attacked_nodes(C, *I);
-	while(!N.empty()){
 
-	}
-}
-Preferred pref(AF gamma, SetArguments C){
-	Preferred e;
-	SetArguments I;
-	grounded(gamma,C,&e,&I);
-	//...
-}
 
 int main(int argc, char *argv[])
 {
@@ -64,10 +36,18 @@ int main(int argc, char *argv[])
 	AF framework = AF();
 	if (!framework.readFile(inputfile))
 	{
-
 		return -1;
 	}
+	list<SCC*> a=SCCSSEQ(framework);
+	if(a.empty()) cout <<"tristezza"<<endl;
+	else cout <<"gioia"<<endl;
+	list<SCC*>::iterator it;
+	for(it=a.begin();it!=a.end();it++){
+		cout <<"pippo"<<endl;
+		cout << *it<<endl;
+	}
 
+/*
 	Preferred p = Preferred();
 
 	SetArguments C_set1 = SetArguments();
@@ -99,7 +79,7 @@ int main(int argc, char *argv[])
 	{
 		cout << "Second extension " << endl;
 		cout << *((*it).inargs()) << endl;
-	}
+	}*/
 
 	return 0;
 }
