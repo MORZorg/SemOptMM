@@ -14,46 +14,24 @@
  */
 
 list<SCC*> SCCSSEQ(AF gamma){
-	list<SCC*> list_SCC;
 	stack<DFS_node*> G = initialize_stack(gamma);
-	cout<<"DFS first start"<<endl;
+	list<SCC*> list_SCC,dummy_list;
 	// first call of DFS
-	DFS(G,true);
-	cout<<"DFS second start"<<endl;
+	DFS(G,true,&dummy_list);
 	// second call of DFS, considering edges in the opposite direction
-	DFS(G,false);
-	cout<<"DFS finish"<<endl;
 
-	// remove from the stack root DFS_node which are not root of the tree
-	DFS_node* u;
-	stack<DFS_node*> root = stack<DFS_node*>(G);
-	while(!G.empty()){
-		u = G.top();
-		G.pop();
-		if( u->p != NULL ){
-			remove_stack(&root,u);
-		}
+	DFS(G,false,&list_SCC);
+	list<SCC*>::iterator it;
+	SCC* temp;
+
+	for(it=list_SCC.begin();it!=list_SCC.end();it++){
+		temp=*it;
+		cout<<temp->set<<endl;
+
 	}
-	cout<<"1* while finish"<<endl;
-	int k=0;
+	cout<<endl;
 
-	// create from every root the sequence of SCC
-	while(!root.empty()){//puntatori??
-		cout<<k++<<endl;
-		DFS_node* temp = new DFS_node();
-		SCC *scc = new SCC();
-		temp=root.top();
-		do{
-			scc->set.add_Argument(temp->argument);
-			cout << scc->set<<endl;
-			temp=temp->p;
-		}while(temp!=NULL);
-		cout<<"fine una root"<<endl;
-		root.pop();
-		list_SCC.push_back(scc);
-	}
-	cout<<"2* while"<<endl;
-
+	return list_SCC;
 }
 
 /**
@@ -61,8 +39,6 @@ list<SCC*> SCCSSEQ(AF gamma){
  * @param remove		node to remove
  * @retval void
  */
-
-
 void remove_stack(stack<DFS_node*> * S, DFS_node * remove){
 	stack<DFS_node*> temp;
 	while(!S->empty()){
@@ -82,8 +58,6 @@ void remove_stack(stack<DFS_node*> * S, DFS_node * remove){
  * @param S				stack which is to sort
  * @retval 				the sorted stack
  */
-
-
 stack<DFS_node*> sort_stack(stack<DFS_node*> S){//e azzero colore
 	DFS_node * temp_node;
 	stack<DFS_node*> stack;
@@ -120,11 +94,10 @@ bool compareTime(DFS_node* a,DFS_node* b){
  * @retval void
  */
 
-void DFS(stack<DFS_node*> S, bool first){
-	list<SCC*> SCCSSEQ;
+void DFS(stack<DFS_node*> S, bool first, list<SCC*> *SCCSSEQ){
 	int time = 0;
 	DFS_node* u;
-	SCC scc_tmp;
+	SCC * scc_tmp;
 
 	//copy of S stack, in this way we can extract element from S, and G doesn't change
 	stack<DFS_node*> G = stack<DFS_node*>(S);
@@ -139,15 +112,13 @@ void DFS(stack<DFS_node*> S, bool first){
 		u = S.top();
 		S.pop();
 		if( u->color == 0 ){
-			cout << "SCC " << scc_num++ << ": ";
+			scc_tmp=new SCC;
 			//cout << u->argument->getName() << " ";
-
-			scc_tmp=DFS_visit(G,u,&time, first);
+			DFS_visit(G,u,&time, first, scc_tmp);
 			if(!first){
-				SCCSSEQ.push_back(&scc_tmp);
-				cout<<scc_tmp.set<<endl;
+				SCCSSEQ->push_back(scc_tmp);
+				//cout<<scc_tmp->set<<endl;
 			}
-			cout << endl;
 		}
 	}
 }
@@ -158,10 +129,8 @@ void DFS(stack<DFS_node*> S, bool first){
  * @param first			true if is the first time which we are using DFS in the SCCSSEQ method
  * @retval SCC			return the SCC computed
  */
-
-
-SCC DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first){
-	SCC tmp_scc, tmp_scc2;
+void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first, SCC *tmp_scc){
+	SCC tmp_scc2;
 	(*time)++;
 	u->d = *time;
 	u->color = 1;//gray
@@ -183,21 +152,20 @@ SCC DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first){
 		//cout << (temp->argument->getName())<<" sub"<<endl;
 		if( temp->color == 0 ){
 			temp->p = u;
-			tmp_scc2=DFS_visit(S,temp,time,first);
+			DFS_visit(S,temp,time,first,&tmp_scc2);
 			if(!first){
-				tmp_scc.set.setunion(&(tmp_scc2.set),&(tmp_scc.set));
+				tmp_scc->set.setunion(&(tmp_scc2.set),&(tmp_scc->set));
 			}
 		}
 	}
 
 	u->color = 2;
 	if (!first){
-		tmp_scc.set.add_Argument(u->argument);
-		cout << u->argument->getName() <<" ";
+		//cout << u->argument->getName() <<" : "<< u->f << endl;
+		tmp_scc->set.add_Argument(u->argument);
 	}
 	(*time)++;
 	u->f = *time;
-	return tmp_scc;
 }
 
 /**

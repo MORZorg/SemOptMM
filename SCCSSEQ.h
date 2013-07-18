@@ -35,11 +35,12 @@ struct DFS_node{
 
 struct SCC{
 	SetArguments set;
+	SCC(){}
 };
 bool compareTime(DFS_node* a,DFS_node* b);
 list<SCC*> SCCSSEQ(AF gamma);
-void DFS(stack<DFS_node*> S, bool first);
-SCC DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first);
+void DFS(stack<DFS_node*> S, bool first, list<SCC*> *SCCSSEQ);
+void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first, SCC *tmp_scc);
 stack<DFS_node*> initialize_stack(AF gamma);
 DFS_node* get_DFS_node(stack<DFS_node*> S, Argument a );
 void remove_stack(stack<DFS_node*> * S, DFS_node * remove);

@@ -39,13 +39,6 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	list<SCC*> a=SCCSSEQ(framework);
-	if(a.empty()) cout <<"tristezza"<<endl;
-	else cout <<"gioia"<<endl;
-	list<SCC*>::iterator it;
-	for(it=a.begin();it!=a.end();it++){
-		cout <<"pippo"<<endl;
-		cout << *it<<endl;
-	}
 
 /*
 	Preferred p = Preferred();
