@@ -163,6 +163,11 @@ SetArguments *Argument::get_attacks()
 	return this->attacks;
 }
 
+void Argument::set_attacks(SetArguments * set)
+{
+	this->attacks=set;
+}
+
 /**
  * @brief  Method returning the set of attacked arguments
  * @retval SetArguments*
@@ -170,6 +175,11 @@ SetArguments *Argument::get_attacks()
 SetArguments *Argument::get_attackers()
 {
 	return this->attackers;
+}
+
+void Argument::set_attackers(SetArguments * set)
+{
+	this->attackers=set;
 }
 
 /**

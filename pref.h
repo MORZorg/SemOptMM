@@ -10,7 +10,9 @@
 #include "SetArguments.h"
 #include "Preferred.h"
 #include "grounded.h"
-Preferred pref(AF gamma, SetArguments C);
+#include <set>
+
+set<SetArguments*> pref(AF gamma, SetArguments C);
 
 
 #endif /* PREF_H_ */

@@ -19,7 +19,7 @@ void Preferred::cleanlabs()
 int Preferred::compute_new_pigreek()
 {
 	SetArguments subtraction = SetArguments();
-	this->af->get_arguments()->setminus(this->C, &subtraction);
+	this->A->setminus(this->C, &subtraction);
 
 	for (SetArgumentsIterator it_sub = subtraction.begin();
 			it_sub != subtraction.end(); it_sub++)
@@ -35,12 +35,19 @@ int Preferred::compute_new_pigreek()
 				OrClause(2, (*it_sub)->OutVar(), (*it_sub)->UndecVar()));
 		this->sat_new_pigreek.appendOrClause(
 				OrClause(2, (*it_sub)->NotOutVar(), (*it_sub)->NotUndecVar()));
+
+		//c-to-add
+		if ((*it_sub)->get_attackers()->empty())
+		{
+			this->sat_new_pigreek.appendOrClause(OrClause(1, (*it_sub)->UndecVar()));
+		}
+
 	}
 
 	if (debug)
 	{
 		cout << "Set arguments: " << endl;
-		cout << *(this->af->get_arguments()) << endl;
+		cout << *(this->A) << endl;
 
 		cout << "C set:" << endl;
 		cout << *(this->C) << endl;
@@ -104,6 +111,10 @@ int Preferred::compute_new_pigreek()
 			for (SetArgumentsIterator it_pred = pred->begin();
 					it_pred != pred->end(); it_pred++)
 			{
+
+				if (!this->A->exists(*it_pred))
+					continue;
+
 				//c5
 				if (encoding == 0 || encoding == 1 || encoding == 3
 						|| encoding == 5)
@@ -172,9 +183,10 @@ int Preferred::compute_new_pigreek()
 		}
 	}
 
-	for (SetArgumentsIterator it_args = this->af->begin();
-			it_args != this->af->end(); it_args++)
+	for (SetArgumentsIterator it_args = this->A->begin();
+			it_args != this->A->end(); it_args++)
 	{
+
 		OrClause c7_last_clause = OrClause();
 		SetArguments *pred = (*it_args)->get_attackers();
 
@@ -184,6 +196,9 @@ int Preferred::compute_new_pigreek()
 		for (SetArgumentsIterator it_pred = pred->begin();
 				it_pred != pred->end(); it_pred++)
 		{
+
+			if (!this->A->exists(*it_pred))
+				continue;
 
 			//c6
 			if (encoding == 0 || encoding == 2 || encoding == 3
@@ -205,7 +220,7 @@ int Preferred::compute_new_pigreek()
 		//c7-end
 		if (encoding == 0 || encoding == 1 || encoding == 3 || encoding == 4)
 		{
-			c7_last_clause.addHeadVariable((*it_args)->NotOutVar());
+			c7_last_clause.appendVariable((*it_args)->NotOutVar());
 			this->sat_new_pigreek.appendOrClause(c7_last_clause);
 		}
 
@@ -231,56 +246,70 @@ bool Preferred::satlab(SATFormulae sat, Labelling *lab)
 	if (debug)
 	{
 		cout << "Preparing the satsolver" << "\n";
-		cout << cnf_string.str();
+		cout << cnf_string.str() << endl;
 	}
 
 	vector<int> lastcompfound = vector<int>();
-	int retsat = precosat_lib(&cnf_string, 3 * af->numArgs(), sat.size(),
+	int retsat = precosat_lib(&cnf_string,
+			3 * ((*(this->A->begin()))->get_af()->numArgs()), sat.size(),
 			&lastcompfound);
 
 	if (debug)
-		cout << retsat;
+	{
+		cout << retsat << endl;
+
+		for (vector<int>::iterator solit = lastcompfound.begin();
+				solit != lastcompfound.end(); solit++)
+		{
+			cout << *solit << " ";
+		}
+		cout << endl;
+	}
 
 	if (retsat != 20)
 	{
-		for (int i = 0; i < af->numArgs(); i++)
+		for (SetArgumentsIterator it = this->A->begin(); it != this->A->end();
+				it++)
 		{
-			if (lastcompfound.at(i) > 0)
+			if (find(lastcompfound.begin(), lastcompfound.end(), (*it)->InVar())
+					!= lastcompfound.end())
 			{
-				lab->add_label(af->getArgumentByNumber(i), Labelling::lab_in);
+				lab->add_label((*it), Labelling::lab_in);
 				if (debug)
 				{
-					cout << af->getArgumentByNumber(i)->getName() << endl;
+					cout << (*it)->getName() << endl;
 				}
 				continue;
 			}
-			if (lastcompfound.at(i + af->numArgs()) > 0)
+			if (find(lastcompfound.begin(), lastcompfound.end(),
+					(*it)->OutVar()) != lastcompfound.end())
 			{
-				lab->add_label(af->getArgumentByNumber(i), Labelling::lab_out);
+				lab->add_label((*it), Labelling::lab_out);
 				continue;
 			}
-			if (lastcompfound.at(i + 2 * af->numArgs()) > 0)
+			if (find(lastcompfound.begin(), lastcompfound.end(),
+					(*it)->UndecVar()) != lastcompfound.end())
 			{
-				lab->add_label(af->getArgumentByNumber(i),
-						Labelling::lab_undec);
+				lab->add_label((*it), Labelling::lab_undec);
 				continue;
 			}
 		}
 		if (debug)
 		{
-			cout << "in " << lab->inargs()->cardinality() << endl;
-			cout << "out " << lab->outargs()->cardinality() << endl;
-			cout << "undec " << lab->undecargs()->cardinality() << endl;
+			cout << endl;
+			cout << "in " << *(lab->inargs()) << endl;
+			cout << "out " << *(lab->outargs()) << endl;
+			cout << "undec " << *(lab->undecargs()) << endl;
 		}
 		return true;
 	}
 	return false;
 }
 
-void Preferred::prefSAT(AF *the_af, SetArguments *the_c)
+void Preferred::prefSAT(SetArguments *the_a, SetArguments *the_c)
 {
 	this->cleanlabs();
-	this->af = the_af;
+	this->A = the_a;
 	this->C = the_c;
 	this->compute_new_pigreek();
 	SATFormulae cnf = SATFormulae();

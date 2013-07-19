@@ -29,7 +29,7 @@ using namespace std;
 
 #define HG(a) static const char *hgrev = a;
 
-#define _PUBLIC_RELEASE "0.2alpha2-SCC"
+#define _PUBLIC_RELEASE "0.2alpha5-SCC"
 #ifndef _PUBLIC_RELEASE
 #include "hgversion.h"
 #else
@@ -46,7 +46,7 @@ HG("Version: "_PUBLIC_RELEASE);
 #include "Preferred.h"
 
 #include "SCCSSEQ.h"
-
+#include "grounded.h"
 
 extern bool debug;
 extern bool externalsat;

@@ -52,6 +52,9 @@ public:
 	void add_attackers(Argument *);
 	SetArguments *get_attacks();
 	SetArguments *get_attackers();
+
+	void set_attacks(SetArguments * set);
+	void set_attackers(SetArguments * set);
 };
 
 #ifndef GRAPH_H_

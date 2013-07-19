@@ -138,3 +138,25 @@ SetArguments *AF::get_arguments() const
 {
 	return this->arguments;
 }
+
+void AF::ReduceAF(SetArguments I){
+	this->arguments=&I;
+	SetArguments *attacks, *attackers;
+	for(SetArgumentsIterator it=this->arguments->begin();it!=this->arguments->end();it++){
+		attacks=(*it)->get_attacks();
+		for(SetArgumentsIterator jt=attacks->begin();jt!=attacks->end();jt++){
+			if(!I.exists(*jt)){//rimuovere *jt
+				attacks->remove(*jt);//l'iteratore?? ... poi dove punta?
+			}
+		}
+		(*it)->set_attacks(attacks);//da controllare...
+
+		attackers=(*it)->get_attackers();
+		for(SetArgumentsIterator jt=attackers->begin();jt!=attackers->end();jt++){
+			if(!I.exists(*jt)){//come sopra
+				attackers->remove(*jt);
+			}
+		}
+		(*it)->set_attackers(attackers);
+	}
+}

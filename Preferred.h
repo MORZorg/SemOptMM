@@ -24,8 +24,8 @@ extern bool debug;
 
 class Preferred
 {
-	AF *af; //!< @brief The Argumentation Framework considered
-	SetArguments *C; //!< @brief the set of arguments to consider
+	SetArguments *A; //!< @brief the set of arguments A
+	SetArguments *C; //!< @brief the set of arguments C
 	int encoding;
 	SATFormulae sat_new_pigreek;
 	vector<Labelling> labellings;
@@ -36,7 +36,7 @@ public:
 	typedef vector<Labelling>::iterator iterator;
 	Preferred();
 	virtual ~Preferred();
-	void prefSAT(AF *, SetArguments *);
+	void prefSAT(SetArguments *, SetArguments *);
 	iterator begin();
 	iterator end();
 };

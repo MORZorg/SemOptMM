@@ -11,51 +11,63 @@
  */
 SetArguments get_not_attacked_nodes(SetArguments C, SetArguments I){
 	SetArguments N, intersect, result;
-	SetArguments * attackers;
+	SetArguments * attacks;
 	C.clone(&N);
-	for (SetArgumentsIterator it = C.begin(); it != C.end(); it++){
-		attackers=(*it)->get_attackers();
-		(attackers)->intersect(&I, &intersect);
-		for (SetArgumentsIterator it = intersect.begin(); it != intersect.end(); it++){
-			if (N.exists((*it)))
-				N.remove((*it));
+	for (SetArgumentsIterator it = I.begin(); it != I.end(); it++){
+		attacks=(*it)->get_attacks();
+		for (SetArgumentsIterator jt = attacks->begin(); jt != attacks->end(); jt++){
+			if (N.exists((*jt)))
+				N.remove((*jt));
 		}
 		if(N.empty()) break;//improvement :)
 	}
+	cout <<"get_not_attacked_nodes_N: "<< N<<endl;
 	return N;
 }
 
 /**
- * Returns a subset of set containing all nodes that are attacked from nodes in N
+ * Returns a subset of Set containing all nodes that are attacked from nodes in N
  */
 SetArguments get_attacked_from(SetArguments set, SetArguments N){
-	SetArguments intersect,result;
-	SetArguments * attackers;
-	for(SetArgumentsIterator it=set.begin();it!=set.end();it++){
-		attackers=(*it)->get_attackers();
-		attackers->intersect(&N, &intersect);
-		if(!intersect.empty()){
-			result.add_Argument(*it);
-		}
+	SetArguments intersect,result,tmp;
+	SetArguments * attacks;
+	for(SetArgumentsIterator it=N.begin();it!=N.end();it++){
+		attacks=(*it)->get_attacks();
+		tmp.setunion(attacks,&tmp);
 	}
+
+	tmp.intersect(&set,&result);
 	return result;
 }
 
-void grounded(AF gamma, SetArguments C, SetArguments *e, SetArguments *I) {
+/**
+ * to be called with I=A
+ */
+void grounded(SetArguments C, SetArguments *e, SetArguments *I) {
 	SetArguments N,ANC,ANI,temp;
 	*e = SetArguments();
-	I=gamma.get_arguments();
+
+	cout << "I: "<<*I<<endl;
 	N=get_not_attacked_nodes(C, *I);
 	while(!N.empty()){
+		cout <<"N: "<<N<<endl;
+		cout <<"C: "<<C<<endl;
+		cout <<"I: "<<*I<<endl;
+		cout <<"iter"<<endl;
 		e->setunion(&N,e);
 		ANC=get_attacked_from(C,N);
+		cout <<"ANC intermedio: "<<ANC<<endl;
 		ANI=get_attacked_from(*I,N);
+		cout <<"ANI intermedio: "<<ANI<<endl;
 		N.setunion(&ANC,&temp);
 		C.setminus(&temp,&C);
 		N.setunion(&ANI,&temp);
 		I->setminus(&temp,I);
+		cout <<"I intermedio: "<<*I<<endl;
 		N=get_not_attacked_nodes(C, *I);
 	}
+	cout<<"e finale"<<*e<<endl;
+	cout<<"I finale"<<*I<<endl;
 }
 
 

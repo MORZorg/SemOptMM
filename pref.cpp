@@ -1,7 +1,15 @@
 #include "pref.h"
-Preferred pref(AF gamma, SetArguments C){
-	SetArguments e;
-	SetArguments I;
-	grounded(gamma,C,&e,&I);
+
+set<SetArguments*> pref(AF gamma, SetArguments C){
+	set<SetArguments*> Ep;
+	SetArguments *e;
+	SetArguments *I;
+	I=gamma.get_arguments();
+	grounded(C,e,I);
+	Ep.insert(e);
+	if(I->empty()){
+		return Ep;
+	}
+
 	//...
 }
