@@ -38,13 +38,29 @@ int main(int argc, char *argv[]){
 	}
 	//list<SCC*> a=SCCSSEQ(framework);
 
-	SetArguments e, *I, *C=framework.get_arguments();
+	SetArguments e, *C=framework.get_arguments();
 	//SetArguments *I=new SetArguments();
-	I=framework.get_arguments();
+	SetArguments *I=new SetArguments();
+	framework.get_arguments()->clone(I);
 	grounded(*C, &e, I);
 
 	cout << "e: "<<e<<endl;
 	cout << "I: "<<*I<<endl;
+
+	SetArguments * argomenti=framework.get_arguments();
+	cout <<*argomenti<<endl;
+	for(SetArgumentsIterator it=argomenti->begin();it!=argomenti->end();it++){
+		cout << (*it)->getName() << " attacks: " << *(*it)->get_attacks() << " attackers: "<< *(*it)->get_attackers()<<endl;
+	}
+
+	framework.reduceAF(*I);
+	cout << "after reduction "<<endl;
+
+	argomenti=framework.get_arguments();
+	cout <<*argomenti<<endl;
+	for(SetArgumentsIterator it=argomenti->begin();it!=argomenti->end();it++){
+			cout << (*it)->getName() << " attacks: " << *(*it)->get_attacks() << " attackers: "<< *(*it)->get_attackers()<<endl;
+		}
 /*
  * 	Preferred p = Preferred();
 	SetArguments A_set1 = SetArguments();

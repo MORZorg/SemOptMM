@@ -16,7 +16,7 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 	if(I->empty()){
 		return Ep;
 	}
-
+/*
 	// reduction of gamma with the only nodes which stay in I. Removal of the suspend attacks
 	gamma.reduceAF(I);
 	
@@ -24,7 +24,7 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 	list<SCC*> S = SCCSSEQ(gamma);
 
 	list<SCC*> :: iterator it;
-	
+
 	for( it = S.begin(); it != S.end(); it++ ){
 		Si = *it;
 		set<SetArguments*> E1p;
@@ -59,6 +59,6 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 	}
 
 	return Ep:
-
+*/
 	//...
 }

@@ -149,6 +149,7 @@ void AF::reduceAF(SetArguments I){
 		for(SetArgumentsIterator jt=attacks->begin();jt!=attacks->end();jt++){
 			if(!I.exists(*jt)){//rimuovere *jt
 				attacks->remove(*jt);//l'iteratore?? ... poi dove punta?
+				//jt--;
 			}
 		}
 		(*it)->set_attacks(attacks);//da controllare...
