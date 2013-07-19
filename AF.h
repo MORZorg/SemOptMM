@@ -33,7 +33,7 @@ public:
 	SetArguments *get_arguments() const;
 	SetArgumentsIterator begin();
 	SetArgumentsIterator end();
-	void ReduceAF(SetArguments I);
+	void reduceAF(SetArguments I);
 };
 
 #include "SetArguments.h"

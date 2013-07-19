@@ -139,7 +139,9 @@ SetArguments *AF::get_arguments() const
 	return this->arguments;
 }
 
-void AF::ReduceAF(SetArguments I){
+// ok però secondo me non bisogna mettere tutti i nodi di I nell'insieme, ma solo quelli che sono appartenti sia a gamma che a I, quindi bisogna fare l'intersect
+// per quanto riguarda gli iteratori dobbiamo testarli.
+void AF::reduceAF(SetArguments I){
 	this->arguments=&I;
 	SetArguments *attacks, *attackers;
 	for(SetArgumentsIterator it=this->arguments->begin();it!=this->arguments->end();it++){

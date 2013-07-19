@@ -10,6 +10,8 @@
 #include "SetArguments.h"
 #include "Preferred.h"
 #include "grounded.h"
+#include "SCCSSEQ.h"
+#include "boundcond.h"
 #include <set>
 
 set<SetArguments*> pref(AF gamma, SetArguments C);
