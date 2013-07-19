@@ -10,6 +10,6 @@
 
 #include "AF.h"
 #include "grounded.h"
-
+void boundcond(AF gamma, SetArguments SCC, SetArguments e, SetArguments *O, SetArguments *I);
 
 #endif /* BOUNDCOND_H_ */

@@ -4,7 +4,8 @@ precosat/precomain.d precosat/precomain.o: ../precosat/precomain.cc \
   ../precosat/../SetArguments.h ../precosat/../OrClause.h \
   ../precosat/../SATFormulae.h ../precosat/../Labelling.h \
   ../precosat/../Preferred.h ../precosat/../SCCSSEQ.h \
-  ../precosat/../grounded.h
+  ../precosat/../grounded.h ../precosat/../pref.h \
+  ../precosat/../boundcond.h
 
 ../precosat/precosat.hh:
 
@@ -29,3 +30,7 @@ precosat/precomain.d precosat/precomain.o: ../precosat/precomain.cc \
 ../precosat/../SCCSSEQ.h:
 
 ../precosat/../grounded.h:
+
+../precosat/../pref.h:
+
+../precosat/../boundcond.h:

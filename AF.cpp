@@ -163,3 +163,12 @@ void AF::reduceAF(SetArguments I){
 		(*it)->set_attackers(attackers);
 	}
 }
+
+ostream& operator<<(ostream& out, const AF& framework){
+	SetArguments * argomenti=framework.get_arguments();
+	out <<*argomenti<<endl;
+	for(SetArgumentsIterator it=argomenti->begin();it!=argomenti->end();it++){
+		out << (*it)->getName() << " attacks: " << *(*it)->get_attacks() << " attackers: "<< *(*it)->get_attackers()<<endl;
+	}
+	return out;
+}

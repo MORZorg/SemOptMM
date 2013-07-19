@@ -31,95 +31,21 @@ int main(int argc, char *argv[]){
 	//debug = true; // more verbose
 	debug=false;
 	inputfile = string("test-input/esempio3-test.dl");
-	AF framework = AF();
-	if (!framework.readFile(inputfile))
+	AF gamma = AF();
+	if (!gamma.readFile(inputfile))
 	{
-		return -1;
-	}
-	//list<SCC*> a=SCCSSEQ(framework);
-
-	SetArguments e, *C=framework.get_arguments();
-	//SetArguments *I=new SetArguments();
-	SetArguments *I=new SetArguments();
-	framework.get_arguments()->clone(I);
-	grounded(*C, &e, I);
-
-	cout << "e: "<<e<<endl;
-	cout << "I: "<<*I<<endl;
-
-	SetArguments * argomenti=framework.get_arguments();
-	cout <<*argomenti<<endl;
-	for(SetArgumentsIterator it=argomenti->begin();it!=argomenti->end();it++){
-		cout << (*it)->getName() << " attacks: " << *(*it)->get_attacks() << " attackers: "<< *(*it)->get_attackers()<<endl;
+		return EXIT_FAILURE;
 	}
 
-	framework.reduceAF(*I);
-	cout << "after reduction "<<endl;
+	SetArguments *A=gamma.get_arguments();
+	set<SetArguments*> res;
+	res=pref(gamma,*A);
 
-	argomenti=framework.get_arguments();
-	cout <<*argomenti<<endl;
-	for(SetArgumentsIterator it=argomenti->begin();it!=argomenti->end();it++){
-			cout << (*it)->getName() << " attacks: " << *(*it)->get_attacks() << " attackers: "<< *(*it)->get_attackers()<<endl;
-		}
-/*
- * 	Preferred p = Preferred();
-	SetArguments A_set1 = SetArguments();
-	A_set1.add_Argument(framework.getArgumentByName("a1"));
-	A_set1.add_Argument(framework.getArgumentByName("a2"));
-	A_set1.add_Argument(framework.getArgumentByName("a3"));
-	A_set1.add_Argument(framework.getArgumentByName("a4"));
-	A_set1.add_Argument(framework.getArgumentByName("a5"));
-	A_set1.add_Argument(framework.getArgumentByName("a6"));
-
-	SetArguments C_set1 = SetArguments();
-	C_set1.add_Argument(framework.getArgumentByName("a1"));
-	C_set1.add_Argument(framework.getArgumentByName("a6"));
-
-	p.prefSAT(&A_set1, &C_set1);
-
-	cout << "First example" << endl;
-	int extension_counter = 1;
-
-	for (Preferred::iterator it = p.begin(); it != p.end(); it++)
-	{
-		cout << "Extension number " << extension_counter++ << endl;
-		for (SetArgumentsIterator itarg = (*it).inargs()->begin();
-				itarg != (*it).inargs()->end(); itarg++)
-		{
-			cout << (*itarg)->getName() << endl;
-		}
-		cout << "An alternative way to print out this extension" << endl;
-		cout << *((*it).inargs()) << endl;
+	set<SetArguments*> :: iterator kt;
+	for( kt = res.begin(); kt != res.end(); kt++ ){
+		cout << **kt << endl;
 	}
-	cout << "End of first example" << endl << endl;
 
-
-	SetArguments A_set2 = SetArguments();
-	A_set2.add_Argument(framework.getArgumentByName("a1"));
-	A_set2.add_Argument(framework.getArgumentByName("a2"));
-	A_set2.add_Argument(framework.getArgumentByName("a3"));
-	A_set2.add_Argument(framework.getArgumentByName("a4"));
-	A_set2.add_Argument(framework.getArgumentByName("a5"));
-	A_set2.add_Argument(framework.getArgumentByName("a6"));
-
-	SetArguments C_set2 = SetArguments();
-	C_set2.add_Argument(framework.getArgumentByName("a2"));
-	C_set2.add_Argument(framework.getArgumentByName("a3"));
-	C_set2.add_Argument(framework.getArgumentByName("a4"));
-
-	p.prefSAT(&A_set2, &C_set2);
-
-	cout << "Second example" << endl;
-	extension_counter = 1;
-	for (Preferred::iterator it = p.begin(); it != p.end(); it++)
-	{
-		cout << "Extension number " << extension_counter++ << endl;
-		cout << *((*it).inargs()) << endl;
-	}
-	cout << "End of second example" << endl << endl;
-
-*/
-
-	return 0;
+	return EXIT_SUCCESS;
 }
 #endif

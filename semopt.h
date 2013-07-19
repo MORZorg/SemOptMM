@@ -47,6 +47,7 @@ HG("Version: "_PUBLIC_RELEASE);
 
 #include "SCCSSEQ.h"
 #include "grounded.h"
+#include "pref.h"
 
 extern bool debug;
 extern bool externalsat;

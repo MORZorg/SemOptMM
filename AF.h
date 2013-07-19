@@ -35,6 +35,7 @@ public:
 	SetArgumentsIterator end();
 	void reduceAF(SetArguments I);
 };
+ostream& operator<<(ostream& out, const AF& framework);
 
 #include "SetArguments.h"
 
