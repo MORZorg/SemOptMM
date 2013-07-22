@@ -17,9 +17,10 @@ list<SCC*> SCCSSEQ(AF gamma){
 	stack<DFS_node*> G = initialize_stack(gamma);
 	list<SCC*> list_SCC,dummy_list;
 	// first call of DFS
+	cout<<"primo DFS"<<endl;
 	DFS(G,true,&dummy_list);
 	// second call of DFS, considering edges in the opposite direction
-
+	cout<<"secondo DFS"<<endl;
 	DFS(G,false,&list_SCC);
 	list<SCC*>::iterator it;
 	SCC* temp;
@@ -29,6 +30,9 @@ list<SCC*> SCCSSEQ(AF gamma){
 		cout<<temp->set<<endl;
 
 	}
+	cout<<"terzo DFS"<<endl;
+	DFS(G,true,&dummy_list);
+
 	cout<<endl;
 
 	return list_SCC;
@@ -106,7 +110,6 @@ void DFS(stack<DFS_node*> S, bool first, list<SCC*> *SCCSSEQ){
 	if(!first){
 		S=sort_stack(S);
 	}
-	int scc_num = 0;
 	// visit every node of the stack if the color is white
 	while(!S.empty()){
 		u = S.top();
@@ -160,12 +163,14 @@ void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first, SCC *tmp_
 	}
 
 	u->color = 2;
+
 	if (!first){
-		//cout << u->argument->getName() <<" : "<< u->f << endl;
 		tmp_scc->set.add_Argument(u->argument);
 	}
+
 	(*time)++;
 	u->f = *time;
+	cout << u->argument->getName() <<" : "<< u->f << endl;
 }
 
 /**

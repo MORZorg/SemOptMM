@@ -21,7 +21,7 @@ SetArguments get_not_attacked_nodes(SetArguments C, SetArguments I){
 		}
 		if(N.empty()) break;//improvement :)
 	}
-	cout <<"get_not_attacked_nodes_N: "<< N<<endl;
+	//cout <<"get_not_attacked_nodes_N: "<< N<<endl;
 	return N;
 }
 
@@ -47,27 +47,33 @@ void grounded(SetArguments C, SetArguments *e, SetArguments *I) {
 	SetArguments N,ANC,ANI,temp;
 	*e = SetArguments();
 
-	cout << "I: "<<*I<<endl;
+	//cout << "I: "<<*I<<endl;
+	int iter=0;
 	N=get_not_attacked_nodes(C, *I);
 	while(!N.empty()){
-		cout <<"N: "<<N<<endl;
+/*		cout <<"N: "<<N<<endl;
 		cout <<"C: "<<C<<endl;
 		cout <<"I: "<<*I<<endl;
-		cout <<"iter"<<endl;
+		cout <<"iter"<<endl;*/
 		e->setunion(&N,e);
 		ANC=get_attacked_from(C,N);
-		cout <<"ANC intermedio: "<<ANC<<endl;
+		//cout <<"ANC intermedio: "<<ANC<<endl;
 		ANI=get_attacked_from(*I,N);
-		cout <<"ANI intermedio: "<<ANI<<endl;
+		//cout <<"ANI intermedio: "<<ANI<<endl;
 		N.setunion(&ANC,&temp);
 		C.setminus(&temp,&C);
 		N.setunion(&ANI,&temp);
 		I->setminus(&temp,I);
-		cout <<"I intermedio: "<<*I<<endl;
+		//cout <<"I intermedio: "<<*I<<endl;
 		N=get_not_attacked_nodes(C, *I);
+		cout<<"grounded iter: "<<++iter<<endl;
+		cout<<"e: "<<*e<<endl;
+		cout<<"I: "<<*I<<endl;
 	}
+	/*
 	cout<<"e finale"<<*e<<endl;
 	cout<<"I finale"<<*I<<endl;
+	*/
 }
 
 

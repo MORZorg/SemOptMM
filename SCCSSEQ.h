@@ -36,6 +36,9 @@ struct DFS_node{
 struct SCC{
 	SetArguments set;
 	SCC(){}
+	SCC(SetArguments _set){
+		this->set=_set;
+	}
 };
 bool compareTime(DFS_node* a,DFS_node* b);
 list<SCC*> SCCSSEQ(AF gamma);

@@ -142,10 +142,12 @@ SetArguments *AF::get_arguments() const
 // ok però secondo me non bisogna mettere tutti i nodi di I nell'insieme, ma solo quelli che sono appartenti sia a gamma che a I, quindi bisogna fare l'intersect
 // per quanto riguarda gli iteratori dobbiamo testarli.
 void AF::reduceAF(SetArguments I){
-	this->arguments=&I;
+	cout << I<<endl;
+	this->arguments=new SetArguments(I);
 	SetArguments *attacks, *attackers;
 	for(SetArgumentsIterator it=this->arguments->begin();it!=this->arguments->end();it++){
 		attacks=(*it)->get_attacks();
+		//cout << "attack: " <<*attacks <<endl;
 		for(SetArgumentsIterator jt=attacks->begin();jt!=attacks->end();jt++){
 			if(!I.exists(*jt)){//rimuovere *jt
 				attacks->remove(*jt);//l'iteratore?? ... poi dove punta?
@@ -155,6 +157,8 @@ void AF::reduceAF(SetArguments I){
 		(*it)->set_attacks(attacks);//da controllare...
 
 		attackers=(*it)->get_attackers();
+		//cout << "attackers: " <<*attackers <<endl;
+
 		for(SetArgumentsIterator jt=attackers->begin();jt!=attackers->end();jt++){
 			if(!I.exists(*jt)){//come sopra
 				attackers->remove(*jt);
@@ -162,6 +166,7 @@ void AF::reduceAF(SetArguments I){
 		}
 		(*it)->set_attackers(attackers);
 	}
+	cout << *this<<endl;
 }
 
 ostream& operator<<(ostream& out, const AF& framework){

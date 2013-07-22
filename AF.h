@@ -10,6 +10,7 @@
 
 #include <map>
 #include <fstream>
+#include <iostream>
 
 #include "Argument.h"
 class SetArguments;
