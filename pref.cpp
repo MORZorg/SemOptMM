@@ -7,7 +7,7 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 	SetArguments *in_args;
 
 	// in the first call, grounded has I = A
-	*I = SetArguments(*gamma.get_arguments());
+	*I = *new SetArguments(*gamma.get_arguments());
 	cout << "prima grounded"<<endl;
 	cout << "C:"<<C <<endl;
 	cout << "e:"<<*e <<endl;
@@ -31,7 +31,8 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 	cout << "dopo if I empty"<<endl;
 	cout <<gamma<<endl;
 	// reduction of gamma with the only nodes which stay in I. Removal of the suspend attacks
-	gamma.reduceAF(*I);
+	//gamma.reduceAF(*I);
+	gamma=gamma.reduceAF(*I);
 	cout << "dopo reduced"<<endl;
 	cout <<gamma<<endl;
 
@@ -85,10 +86,14 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 					I->intersect( &C, temp2 );
 
 
-					AF gamma_reduced = AF(gamma);
+					//AF gamma_reduced = AF(gamma);
+					AF gamma_reduced = gamma.reduceAF(Si->set);
+					//cout << "--- gamma reduce ---"<<gamma_reduced<<endl;
+					//cout << "--- gamma ---"<<gamma<<endl;
+					//gamma_reduced.reduceAF(Si->set);
 					cout << "--- gamma ---"<<gamma<<endl;
-					gamma_reduced.reduceAF(Si->set);
 					cout << "--- gamma reduce ---"<<gamma_reduced<<endl;
+					//cout << "--- gamma ---"<<gamma<<endl;
 
 					Preferred p=Preferred();
 					cout << "prima SAT"<<endl;
@@ -117,9 +122,10 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 				Si_set=Si->set;
 				Si_set.setminus( O, temp );
 				I->intersect( &C, temp2 );
-				AF gamma_reduced = AF(gamma);
-				gamma_reduced.reduceAF(*temp);
-				Estar = pref( gamma, *temp2 );
+				//AF gamma_reduced = AF(gamma);
+				//gamma_reduced.reduceAF(*temp);
+				AF gamma_reduced=gamma.reduceAF(*temp);
+				Estar = pref( gamma_reduced, *temp2 );
 			}
 
 			// unione strana
@@ -141,6 +147,7 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 		}
 	// Ep = E1p;
 		Ep=E1p;
+
 	}
 
 	return Ep;

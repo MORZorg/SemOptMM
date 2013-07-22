@@ -26,6 +26,7 @@ class AF
 	//map<Argument *, SetArguments *> attackers;
 public:
 	AF();
+	AF(const AF& gamma);
 	virtual ~AF();
 	bool readFile(string file);
 	int numArgs();
@@ -34,7 +35,7 @@ public:
 	SetArguments *get_arguments() const;
 	SetArgumentsIterator begin();
 	SetArgumentsIterator end();
-	void reduceAF(SetArguments I);
+	AF reduceAF(SetArguments I);
 };
 ostream& operator<<(ostream& out, const AF& framework);
 

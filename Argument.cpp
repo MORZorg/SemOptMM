@@ -165,7 +165,7 @@ SetArguments *Argument::get_attacks()
 
 void Argument::set_attacks(SetArguments * set)
 {
-	this->attacks=set;
+	this->attacks=new SetArguments(*set);
 }
 
 /**
@@ -179,7 +179,7 @@ SetArguments *Argument::get_attackers()
 
 void Argument::set_attackers(SetArguments * set)
 {
-	this->attackers=set;
+	this->attackers=new SetArguments(*set);
 }
 
 /**

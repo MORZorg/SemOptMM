@@ -139,34 +139,44 @@ SetArguments *AF::get_arguments() const
 	return this->arguments;
 }
 
+AF::AF(const AF& gamma){
+	this->arguments=new SetArguments(*gamma.get_arguments());
+}
 // ok però secondo me non bisogna mettere tutti i nodi di I nell'insieme, ma solo quelli che sono appartenti sia a gamma che a I, quindi bisogna fare l'intersect
 // per quanto riguarda gli iteratori dobbiamo testarli.
-void AF::reduceAF(SetArguments I){
-	cout << I<<endl;
-	this->arguments=new SetArguments(I);
-	SetArguments *attacks, *attackers;
-	for(SetArgumentsIterator it=this->arguments->begin();it!=this->arguments->end();it++){
-		attacks=(*it)->get_attacks();
-		//cout << "attack: " <<*attacks <<endl;
+AF AF::reduceAF(const SetArguments I){
+	AF gamma_reduced=*new AF();
+	gamma_reduced.arguments=new SetArguments(I);
+
+	SetArguments *attacks;
+	SetArguments *attackers;
+	for(SetArgumentsIterator it=gamma_reduced.arguments->begin();it!=gamma_reduced.arguments->end();it++){
+		cout << "it"<<(*it)->getName()<<endl;
+		attacks=new SetArguments(*(*it)->get_attacks());
+		cout << "attack: " <<*attacks <<endl;
 		for(SetArgumentsIterator jt=attacks->begin();jt!=attacks->end();jt++){
-			if(!I.exists(*jt)){//rimuovere *jt
+			cout << "attack jt prima"<<(*jt)->getName()<<endl;
+			if(!(gamma_reduced.arguments)->exists(*jt)){//rimuovere *jt
 				attacks->remove(*jt);//l'iteratore?? ... poi dove punta?
+				cout << "attack jt solo se non esiste"<<(*jt)->getName()<<endl;
 				//jt--;
 			}
 		}
 		(*it)->set_attacks(attacks);//da controllare...
+		cout << "attack: " <<*attacks <<endl;
 
-		attackers=(*it)->get_attackers();
-		//cout << "attackers: " <<*attackers <<endl;
+		attackers=new SetArguments(*(*it)->get_attackers());
+		cout << "attackers: " <<*attackers <<endl;
 
 		for(SetArgumentsIterator jt=attackers->begin();jt!=attackers->end();jt++){
-			if(!I.exists(*jt)){//come sopra
+			if(!(gamma_reduced.arguments)->exists(*jt)){//come sopra
 				attackers->remove(*jt);
 			}
 		}
 		(*it)->set_attackers(attackers);
 	}
-	cout << *this<<endl;
+	return gamma_reduced;
+	//cout << *this<<endl;
 }
 
 ostream& operator<<(ostream& out, const AF& framework){
