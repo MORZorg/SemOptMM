@@ -87,12 +87,16 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 
 
 					//AF gamma_reduced = AF(gamma);
+					cout << "--- gamma prima ---"<<gamma<<endl;
+					AF gamma2 = AF(gamma);
+
 					AF gamma_reduced = gamma.reduceAF(Si->set);
 					//cout << "--- gamma reduce ---"<<gamma_reduced<<endl;
 					//cout << "--- gamma ---"<<gamma<<endl;
 					//gamma_reduced.reduceAF(Si->set);
 					cout << "--- gamma ---"<<gamma<<endl;
 					cout << "--- gamma reduce ---"<<gamma_reduced<<endl;
+					cout << "--- gamma prima2 ---"<<gamma2<<endl;
 					//cout << "--- gamma ---"<<gamma<<endl;
 
 					Preferred p=Preferred();

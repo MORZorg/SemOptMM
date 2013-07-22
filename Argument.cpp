@@ -23,6 +23,15 @@ Argument::Argument(string name, int num, AF *theaf)
 	this->attacks = new SetArguments();
 }
 
+Argument::Argument(Argument argument, AF *gamma)
+{
+	this->name = argument.getName();
+	this->number = argument.getNumber();
+	this->af = gamma;
+	this->attackers = new SetArguments();;
+	this->attacks = new SetArguments();;
+}
+
 Argument::~Argument()
 {
 	// TODO Auto-generated destructor stub
@@ -190,3 +199,5 @@ AF *Argument::get_af()
 {
 	return this->af;
 }
+
+

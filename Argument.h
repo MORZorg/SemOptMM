@@ -36,6 +36,7 @@ class Argument
 	SetArguments *attackers;
 public:
 	Argument(string, int, AF*);
+	Argument(Argument argument, AF *gamma);
 	virtual ~Argument();
 	string getName() const;
 	int getNumber() const;

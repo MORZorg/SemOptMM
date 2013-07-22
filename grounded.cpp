@@ -16,10 +16,8 @@ SetArguments get_not_attacked_nodes(SetArguments C, SetArguments I){
 	SetArguments * attacks;
 	C.clone(&N);
 	for (SetArgumentsIterator it = I.begin(); it != I.end(); it++){
-		cout<<"attaccante: "<<(*it)->getName()<<endl;
 		attacks=(*it)->get_attacks();
 		for (SetArgumentsIterator jt = attacks->begin(); jt != attacks->end(); jt++){
-			cout << "attaccato: "<<(*jt)->getName()<<endl;
 			if (N.exists((*jt)))
 				N.remove((*jt));
 		}
