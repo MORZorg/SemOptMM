@@ -10,8 +10,8 @@
  * Returns a subset of C containing all nodes that are not attacked from nodes in I
  */
 SetArguments get_not_attacked_nodes(SetArguments C, SetArguments I){
-	cout << "get_not_attacked_nodes: C "<<C<<endl;
-	cout << "get_not_attacked_nodes: I "<<I<<endl;
+	//cout << "get_not_attacked_nodes: C "<<C<<endl;
+	//cout << "get_not_attacked_nodes: I "<<I<<endl;
 	SetArguments N, intersect, result;
 	SetArguments * attacks;
 	C.clone(&N);

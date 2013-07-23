@@ -144,11 +144,15 @@ AF::AF(const AF& gamma){
 }
 
 AF AF::reduceAF( SetArguments I){
+	int index=0;
 	AF *gamma_reduced = new AF();
 	gamma_reduced->arguments = new SetArguments();
 	SetArgumentsIterator yt = gamma_reduced->arguments->begin();
 	for(SetArgumentsIterator it = I.begin(); it != I.end(); it++, yt++){
-		Argument *toAdd=new Argument(**it,gamma_reduced);
+		//(*it)->set_number(index);
+		Argument *toAdd=new Argument(**it, gamma_reduced, index);
+		//cout << "current argument: "<<(*it)->getName()<<endl<<"old af: "<<*(*it)->get_af() <<endl;
+		++index;
 
 		SetArguments * attacks = new SetArguments(*(*it)->get_attacks());
 		SetArguments * attacks1 = new SetArguments(*(*it)->get_attacks());
@@ -170,7 +174,35 @@ AF AF::reduceAF( SetArguments I){
 
 		gamma_reduced->arguments->add_Argument(toAdd);
 
-		cout<< "dentro gamma"<<*this<<endl;
+		//cout<< "dentro gamma"<<*this<<endl;
+	}
+//	SetArguments *to_be_corrected = new SetArguments();
+
+//	this->get_arguments()->setminus(gamma_reduced->get_arguments(), to_be_corrected);
+	/*
+	cout << "gamma arg: " << *this->get_arguments() << endl;
+	cout <<"gamma ridotto: " <<*gamma_reduced->get_arguments()<<endl;
+	cout <<"to_be_corrected: " <<*to_be_corrected<<endl;
+	*/
+//	--index;
+//	to_be_corrected->adjust_indexes(index);
+/*
+	cout<<"dopo la correzione"<<endl;
+	cout << "gamma arg: " << *this->get_arguments() << endl;
+	cout <<"gamma ridotto: " <<*gamma_reduced->get_arguments()<<endl;
+	cout <<"to_be_corrected: " <<*to_be_corrected<<endl;
+	cout<< "dentro gamma"<<*this<<endl;
+	*/
+
+	SetArguments * args_gamma = gamma_reduced->get_arguments();
+	for(SetArgumentsIterator it = args_gamma->begin(); it != args_gamma->end(); it++){
+		SetArguments * attacks = (*it)->get_attacks();
+		SetArguments * new_attacks = attacks->adjust_set(args_gamma);
+		(*it)->set_attacks(new_attacks);
+
+		SetArguments * attackers = (*it)->get_attackers();
+		SetArguments * new_attackers = attackers->adjust_set(args_gamma);
+		(*it)->set_attackers(new_attackers);
 	}
 	return *gamma_reduced;
 }

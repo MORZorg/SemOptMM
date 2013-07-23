@@ -36,7 +36,7 @@ class Argument
 	SetArguments *attackers;
 public:
 	Argument(string, int, AF*);
-	Argument(Argument argument, AF *gamma);
+	Argument(Argument argument, AF *gamma, int index);
 	virtual ~Argument();
 	string getName() const;
 	int getNumber() const;
@@ -56,6 +56,7 @@ public:
 
 	void set_attacks(SetArguments * set);
 	void set_attackers(SetArguments * set);
+	void set_number(int index);
 };
 
 #ifndef GRAPH_H_

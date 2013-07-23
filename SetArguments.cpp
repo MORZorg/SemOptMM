@@ -219,7 +219,8 @@ ostream& operator<<(ostream& out, const SetArguments& r)
 	SetArgumentsIterator it;
 	for (it = r.begin(); it != r.end();)
 	{
-		out << (*it)->getName();
+		//out << (*it)->getName();
+		out << (*it)->getName() <<"(#"<<(*it)->getNumber()<<")";
 		if (++it != r.end())
 			out << " ";
 	}
@@ -241,4 +242,30 @@ void SetArguments::setunion(SetArguments *other, SetArguments *result)
 		if (!(result->exists((*it))))
 			result->add_Argument((*it));
 	}
+}
+
+//correggo gli indici del setArgument (rimanente)
+void SetArguments::adjust_indexes(int last_index){
+	for (SetArgumentsIterator it = this->begin(); it != this->end(); it++){
+		(*it)->set_number(++last_index);
+	}
+}
+
+SetArguments * SetArguments::adjust_set(SetArguments * set_correct){
+	SetArguments * new_args = new SetArguments();
+	int cont=0;
+	for(SetArgumentsIterator it = this->begin(); it != this->end(); it++){
+		Argument * arg_correct;
+		cout<<"ciao in for"<<endl;
+		cout<<"it "<<(*it)->getName()<<endl;
+		if(set_correct->exists(*it)){
+			arg_correct = set_correct->getArgumentByName((*it)->getName());
+		}
+		else{
+			arg_correct = new Argument(**it, (*it)->get_af() ,set_correct->cardinality()+cont);
+			cont++;
+		}
+		new_args->add_Argument(arg_correct);
+	}
+	return new_args;
 }

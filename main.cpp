@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
 
 	//debug = true; // more verbose
 	debug=false;
-	inputfile = string("test-input/esempio4-test.dl");
+	inputfile = string("test-input/esempio2-lucidi.dl");
 	AF gamma = AF();
 	if (!gamma.readFile(inputfile))
 	{
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]){
 	for( kt = res.begin(); kt != res.end(); kt++ ){
 		cout << **kt << endl;
 	}
-
+cout<<"ciao ciao"<<endl;
 	return EXIT_SUCCESS;
 }
 #endif

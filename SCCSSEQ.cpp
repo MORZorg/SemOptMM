@@ -17,11 +17,13 @@ list<SCC*> SCCSSEQ(AF gamma){
 	stack<DFS_node*> G = initialize_stack(gamma);
 	list<SCC*> list_SCC,dummy_list;
 	// first call of DFS
-	cout<<"primo DFS"<<endl;
+	//cout<<"primo DFS"<<endl;
 	DFS(G,true,&dummy_list);
+
 	// second call of DFS, considering edges in the opposite direction
-	cout<<"secondo DFS"<<endl;
+	//cout<<"secondo DFS"<<endl;
 	DFS(G,false,&list_SCC);
+
 	list<SCC*>::iterator it;
 	SCC* temp;
 
@@ -30,8 +32,7 @@ list<SCC*> SCCSSEQ(AF gamma){
 		cout<<temp->set<<endl;
 
 	}
-	cout<<"terzo DFS"<<endl;
-	DFS(G,true,&dummy_list);
+	//DFS(G,true,&dummy_list);
 
 	cout<<endl;
 
@@ -170,7 +171,7 @@ void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first, SCC *tmp_
 
 	(*time)++;
 	u->f = *time;
-	cout << u->argument->getName() <<" : "<< u->f << endl;
+	//cout << u->argument->getName() <<" : "<< u->f << endl;
 }
 
 /**

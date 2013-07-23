@@ -23,10 +23,10 @@ Argument::Argument(string name, int num, AF *theaf)
 	this->attacks = new SetArguments();
 }
 
-Argument::Argument(Argument argument, AF *gamma)
+Argument::Argument(Argument argument, AF *gamma, int index)
 {
 	this->name = argument.getName();
-	this->number = argument.getNumber();
+	this->number = index;
 	this->af = gamma;
 	this->attackers = new SetArguments();;
 	this->attacks = new SetArguments();;
@@ -174,7 +174,7 @@ SetArguments *Argument::get_attacks()
 
 void Argument::set_attacks(SetArguments * set)
 {
-	this->attacks=new SetArguments(*set);
+	this->attacks=(set);
 }
 
 /**
@@ -188,7 +188,7 @@ SetArguments *Argument::get_attackers()
 
 void Argument::set_attackers(SetArguments * set)
 {
-	this->attackers=new SetArguments(*set);
+	this->attackers=(set);
 }
 
 /**
@@ -200,4 +200,7 @@ AF *Argument::get_af()
 	return this->af;
 }
 
+void Argument::set_number(int index){
+	this->number=index;
+}
 
