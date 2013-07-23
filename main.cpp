@@ -36,46 +36,19 @@ int main(int argc, char *argv[]){
 	{
 		return EXIT_FAILURE;
 	}
-/*
-	SetArguments e, *C=gamma.get_arguments();
-	//SetArguments *I=new SetArguments();
-	SetArguments *I=new SetArguments();
-	gamma.get_arguments()->clone(I);
-	grounded(*C, &e, I);
-
-	cout << "e: "<<e<<endl;
-	cout << "I: "<<*I<<endl;
-
-	cout<<gamma<<endl;
-	gamma.reduceAF(*I);
-	cout << "after reduction "<<endl;
-	cout<<gamma<<endl;
-
-	cout <<"pippo"<<endl;*/
-
 
 	SetArguments *A = new SetArguments();
 	*A=SetArguments(*gamma.get_arguments());
 
-/*	list<SCC*> S = SCCSSEQ(gamma);//E' DA VALUTARE SE SIA ORDINATA O NO!!
-		cout << "sequenza SCC"<<endl;
-		list<SCC*>::iterator a;
-
-		int cont3=0;
-		for(a=S.begin();a!=S.end();a++){
-			cout <<"----"<< ++cont3 << (*a)->set <<endl;
-		}*/
-
 	set<SetArguments*> res;
 
-	cout << "prima "<<endl;
 	res=pref(gamma,*A);
-	cout << "dopo "<<endl;
+
 	set<SetArguments*> :: iterator kt;
 	for( kt = res.begin(); kt != res.end(); kt++ ){
 		cout << **kt << endl;
 	}
-cout<<"ciao ciao"<<endl;
+
 	return EXIT_SUCCESS;
 }
 #endif
