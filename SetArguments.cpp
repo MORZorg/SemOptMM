@@ -1,4 +1,4 @@
-o/**
+/**
  * @file 		SetArguments.cpp
  * @class 		SetArguments
  * @brief 		Class encompassing a set of arguments

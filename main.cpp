@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
 
 	//debug = true; // more verbose
 	debug=false;
-	inputfile = string("test-input/esempio2-lucidi.dl");
+	inputfile = string("test-input/esempio3-lucidi.dl");
 	AF gamma = AF();
 	if (!gamma.readFile(inputfile))
 	{
@@ -44,6 +44,7 @@ int main(int argc, char *argv[]){
 
 	res=pref(gamma,*A);
 
+	cout <<"risultati: "<<endl;
 	set<SetArguments*> :: iterator kt;
 	for( kt = res.begin(); kt != res.end(); kt++ ){
 		cout << **kt << endl;

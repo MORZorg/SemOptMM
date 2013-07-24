@@ -66,11 +66,13 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 			SetArguments *O = new SetArguments();
 			SetArguments *I = new SetArguments();
 
+			e = e->adjust_set(gamma.get_arguments());
+
 			boundcond( gamma, Si->set, *e, O, I );
 			cout << "boundcond results"<<endl;
 			cout << "O: "<< *O<<endl;
 			cout << "I: "<< *I<<endl;
-
+cout<<"prima di quello"<<endl;
 			set<SetArguments*> Estar = set<SetArguments*>();
 			
 			if( O->empty() ){
@@ -115,10 +117,16 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 				}
 			} else {
 				// cout << "O not empty"<<endl;
-				SetArguments *temp, *temp2, Si_set;
+				SetArguments *temp = new SetArguments();
+				SetArguments *temp2 = new SetArguments();
+				SetArguments Si_set;
+
 				Si_set = Si->set;
+
 				Si_set.setminus(O, temp);
+
 				I->intersect(&C, temp2);
+
 				AF gamma_reduced = gamma.reduceAF(*temp);
 				Estar = pref(gamma_reduced, *temp2);
 			}

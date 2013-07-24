@@ -23,6 +23,8 @@
 #include <cassert>
 #include <set>
 
+#include <vector>
+
 #define DIMBUFFER 100000
 
 using namespace std;
