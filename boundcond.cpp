@@ -24,7 +24,6 @@ void boundcond(AF gamma, SetArguments SCC, SetArguments e, SetArguments *O, SetA
 	(gamma.get_arguments())->setminus(&SCC,&gamma_except_SCC);
 
 	A=get_not_attacked_nodes(SCC_except_O,gamma_except_SCC);
-cout <<"A: "<< A<< endl;
 	//(B) are possibly attacked only by arguments which: condition (i) (ii)
 	SCC.setunion(&e,&SCC_U_e);
 
@@ -32,17 +31,16 @@ cout <<"A: "<< A<< endl;
 
 	//(i) are in gamma but non in (S[i] joint e)
 	B1=get_attacked_from(SCC_except_O,gamma_except_SCC_U_e);
-	cout <<"B1: "<< B1<< endl;
 
 	//(ii) are attacked by Arguments in e
 	SetArguments B=SetArguments();
 	SetArguments * intersect = new SetArguments();
 	SetArguments * it_attackers;
 	for(SetArgumentsIterator it = B1.begin(); it != B1.end(); it++){
-		cout << "it: "<<(*it)->getName() <<endl;
+	
 		it_attackers=(*it)->get_attackers();
-		cout << "attackers"<<*it_attackers<<endl;
 		SetArguments * attackers_union = new SetArguments();
+
 		for(SetArgumentsIterator jt = it_attackers->begin(); jt != it_attackers->end(); jt++){
 			attackers_union->setunion((*jt)->get_attackers(),attackers_union);
 		}
@@ -51,7 +49,6 @@ cout <<"A: "<< A<< endl;
 			B.add_Argument(*it);
 	}
 
-	cout <<"B: "<< B<< endl;
 	//final Boundcond in I 
 	A.setunion(&B,I);
 }

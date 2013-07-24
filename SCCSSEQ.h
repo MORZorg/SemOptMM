@@ -35,7 +35,6 @@ struct DFS_node{
 
 struct SCC{
 	SetArguments set;
-	list<SCC*> parents;
 	SCC(){}
 	SCC(SetArguments _set){
 		this->set=_set;
@@ -47,6 +46,5 @@ void DFS(stack<DFS_node*> S, bool first, list<SCC*> *SCCSSEQ);
 void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first, SCC *tmp_scc);
 stack<DFS_node*> initialize_stack(AF gamma);
 DFS_node* get_DFS_node(stack<DFS_node*> S, Argument a );
-void remove_stack(stack<DFS_node*> * S, DFS_node * remove);
 
 #endif /* SCCSSEQ_H_ */
