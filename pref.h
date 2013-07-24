@@ -14,7 +14,20 @@
 #include "boundcond.h"
 #include <set>
 
-set<SetArguments*> pref(AF gamma, SetArguments C);
+struct OI_pair{
+	SetArguments * O;
+	SetArguments * I;
+	set<SetArguments *> * Estar;
 
+	OI_pair(SetArguments * _O, SetArguments * _I, set<SetArguments *>* _Estar){
+		this->O=_O;
+		this->I=_I;
+		this->Estar=_Estar;
+	}
+};
+
+set<SetArguments*> pref(AF gamma, SetArguments C, vector<OI_pair> * OI_pairs);
+bool lookup(SetArguments * O, SetArguments * I, set<SetArguments*> *Estar, vector<OI_pair> * OI_pairs);
+void insert(SetArguments * O, SetArguments * I, set<SetArguments*> *Estar, vector<OI_pair> * OI_pairs);
 
 #endif /* PREF_H_ */

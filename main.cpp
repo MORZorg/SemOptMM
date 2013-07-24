@@ -42,7 +42,8 @@ int main(int argc, char *argv[]){
 
 	set<SetArguments*> res;
 
-	res=pref(gamma,*A);
+	vector<OI_pair> OI_pairs = vector<OI_pair>();
+	res=pref(gamma,*A, &OI_pairs);
 
 	cout <<"risultati: "<<endl;
 	set<SetArguments*> :: iterator kt;
