@@ -25,6 +25,7 @@ set<SetArguments*> pref(AF gamma, SetArguments C, vector<OI_pair> * OI_pairs){
 	cout << "e:"<<*e <<endl;
 	cout << "I:"<<*I<<endl;
 
+	if(gamma_C == true && C.size <= 1);
 	grounded(C,e,I);
 	cout << "grounded:"<<endl;
 	cout << "C:"<<C <<endl;
