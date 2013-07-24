@@ -14,6 +14,7 @@ void boundcond(AF gamma, SetArguments SCC, SetArguments e, SetArguments *O, SetA
 
 	//O is the subset of Arguments of S[i] which are attacked by Arguments in e;
 	*O=get_attacked_from(SCC,e);
+
 	//cout << "boundcond: O"<<*O<<endl;
 
 	//I is the subset of Arguments of S[i]\O which: condition (A) or condition (B)

@@ -23,10 +23,11 @@ list<SCC*> SCCSSEQ(AF gamma){
 	DFS(G,false,&list_SCC);
 
 	list<SCC*>::iterator it;
-	SCC* temp;
+	SCC* temp, temp2;
 
 	for(it=list_SCC.begin();it!=list_SCC.end();it++){
 		temp=*it;
+
 		cout<<temp->set<<endl;
 	}
 
@@ -34,26 +35,6 @@ list<SCC*> SCCSSEQ(AF gamma){
 
 	return list_SCC;
 }
-
-/**
- * @brief 				compute the removal of a node from the stack
- * @param remove		node to remove
- * @retval void
-
-void remove_stack(stack<DFS_node*> * S, DFS_node * remove){
-	stack<DFS_node*> temp;
-	while(!S->empty()){
-		if(S->top() != remove){
-			temp.push(S->top());
-		}
-		S->pop();
-	}
-	while(!temp.empty()){
-		S->push(temp.top());
-		temp.pop();
-	}
-}
-*/
 
 /**
  * @brief 				sort of the stack

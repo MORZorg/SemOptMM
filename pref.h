@@ -29,5 +29,6 @@ struct OI_pair{
 set<SetArguments*> pref(AF gamma, SetArguments C, vector<OI_pair> * OI_pairs);
 bool lookup(SetArguments * O, SetArguments * I, set<SetArguments*> *Estar, vector<OI_pair> * OI_pairs);
 void insert(SetArguments * O, SetArguments * I, set<SetArguments*> *Estar, vector<OI_pair> * OI_pairs);
+void assign_parent(list<SCC*> *S);
 
 #endif /* PREF_H_ */

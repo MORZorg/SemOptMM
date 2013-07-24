@@ -35,6 +35,7 @@ struct DFS_node{
 
 struct SCC{
 	SetArguments set;
+	list<SCC*> parents;
 	SCC(){}
 	SCC(SetArguments _set){
 		this->set=_set;

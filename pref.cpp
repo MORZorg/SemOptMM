@@ -11,6 +11,12 @@ set<SetArguments*> pref(AF gamma, SetArguments C, vector<OI_pair> * OI_pairs){
 	set<SetArguments*> Ep = set<SetArguments*>();
 	SetArguments *e=new SetArguments();
 	SetArguments *I=new SetArguments();
+	bool gamma_C = false;
+
+	if(*gamma.get_arguments()==C){
+					cout<<"pippo"<<endl;
+					gamma_C = true;
+	}
 	SetArguments *in_args;
 
 	// in the first call, grounded has I = A
@@ -51,12 +57,15 @@ set<SetArguments*> pref(AF gamma, SetArguments C, vector<OI_pair> * OI_pairs){
 	}*/
 
 	list<SCC*> :: iterator it;
-	int cont=0, cont2=0;
+	int cont=0;
 
 	for( it = S.begin(); it != S.end(); it++ ){
 		bool modifica=false;
 		bool Estar_exists=false;
 		SCC* Si = *it;
+		int cont2=0;
+
+
 		cout << cont++ << " Si: "<< Si->set <<endl;
 		set<SetArguments*> E1p = set<SetArguments*>();
 
@@ -71,7 +80,26 @@ set<SetArguments*> pref(AF gamma, SetArguments C, vector<OI_pair> * OI_pairs){
 
 			set<SetArguments*> Estar = set<SetArguments*>();
 
-			boundcond( gamma, Si->set, *e, O, I );
+			if(gamma_C){
+				cout<<"gamma=C"<<endl;
+				SetArguments *kt_attackers = new SetArguments();
+				for(SetArgumentsIterator kt = Si->set.begin(); kt != Si->set.end(); kt++ ){
+					kt_attackers->setunion((*kt)->get_attackers(),kt_attackers);
+				}
+				kt_attackers->setminus(&Si->set,kt_attackers);
+				cout<<"kt_attackers"<<*kt_attackers<<endl;
+				if(kt_attackers->empty()){
+					//O is empty
+					//I =Si
+					*I = Si->set;
+					cout <<"improve3"<<endl;
+				}
+				else{
+					boundcond( gamma, Si->set, *e, O, I );
+				}
+			}
+			else
+				boundcond( gamma, Si->set, *e, O, I );
 
 			cout << "boundcond results"<<endl;
 			cout << "O: "<< *O<<endl;
@@ -103,18 +131,39 @@ set<SetArguments*> pref(AF gamma, SetArguments C, vector<OI_pair> * OI_pairs){
 						Preferred p = Preferred();
 
 						cout << "Invocazione prefSAT"<<endl;
-						p.prefSAT(gamma_reduced.get_arguments(),temp2);
-						cout << "termine prefSAT"<<endl;
 
-						int extension_counter = 1;
+						bool do_prefSAT = true;
+						if(*(gamma_reduced.get_arguments()) == *temp2){
+							if(Si->set.cardinality() == 1){
+								in_args=new SetArguments();
+								in_args->add_Argument(*Si->set.begin());
+								Estar.insert(in_args);
+								do_prefSAT=false;
+							}
+							if(Si->set.cardinality() == 2){
+								for(SetArgumentsIterator rt=Si->set.begin();rt!=Si->set.end();rt++){
+									in_args=new SetArguments();
+									in_args->add_Argument(*rt);
+									Estar.insert(in_args);
+								}
+								do_prefSAT=false;
 
-						for (Preferred::iterator it = p.begin(); it != p.end(); it++){
-							cout << "Extension number " << extension_counter++ << endl;
-							cout <<*(*it).inargs()<<endl;
-							in_args=new SetArguments(*(*it).inargs());
-							Estar.insert(in_args);
+							}
 						}
 
+						if( do_prefSAT ){
+							p.prefSAT(gamma_reduced.get_arguments(),temp2);
+							cout << "termine prefSAT"<<endl;
+
+							int extension_counter = 1;
+
+							for (Preferred::iterator it = p.begin(); it != p.end(); it++){
+								cout << "Extension number " << extension_counter++ << endl;
+								cout <<*(*it).inargs()<<endl;
+								in_args=new SetArguments(*(*it).inargs());
+								Estar.insert(in_args);
+							}
+						}
 					} else{
 						//cout << "I empty"<<endl;
 						Estar = set<SetArguments*>();
