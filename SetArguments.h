@@ -54,7 +54,6 @@ public:
 	void remove(Argument *);
 	void clone(SetArguments *);
 	bool operator==(const SetArguments &other) const;
-	void adjust_indexes(int last_index);
 	SetArguments * adjust_set(SetArguments * set_correct);
 };
 

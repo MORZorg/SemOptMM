@@ -17,11 +17,9 @@ list<SCC*> SCCSSEQ(AF gamma){
 	stack<DFS_node*> G = initialize_stack(gamma);
 	list<SCC*> list_SCC,dummy_list;
 	// first call of DFS
-	//cout<<"primo DFS"<<endl;
 	DFS(G,true,&dummy_list);
 
 	// second call of DFS, considering edges in the opposite direction
-	//cout<<"secondo DFS"<<endl;
 	DFS(G,false,&list_SCC);
 
 	list<SCC*>::iterator it;
@@ -30,9 +28,7 @@ list<SCC*> SCCSSEQ(AF gamma){
 	for(it=list_SCC.begin();it!=list_SCC.end();it++){
 		temp=*it;
 		cout<<temp->set<<endl;
-
 	}
-	//DFS(G,true,&dummy_list);
 
 	cout<<endl;
 
@@ -43,11 +39,11 @@ list<SCC*> SCCSSEQ(AF gamma){
  * @brief 				compute the removal of a node from the stack
  * @param remove		node to remove
  * @retval void
- */
+
 void remove_stack(stack<DFS_node*> * S, DFS_node * remove){
 	stack<DFS_node*> temp;
 	while(!S->empty()){
-		if(S->top() != remove){//funziona davvero?
+		if(S->top() != remove){
 			temp.push(S->top());
 		}
 		S->pop();
@@ -57,6 +53,7 @@ void remove_stack(stack<DFS_node*> * S, DFS_node * remove){
 		temp.pop();
 	}
 }
+*/
 
 /**
  * @brief 				sort of the stack
@@ -138,7 +135,7 @@ void DFS_visit(stack<DFS_node*> S, DFS_node* u, int* time, bool first, SCC *tmp_
 	(*time)++;
 	u->d = *time;
 	u->color = 1;//gray
-	//cout << (u->argument->getName())<<" set gray"<<endl;
+
 	DFS_node * temp;
 
 	// if is the first time we consider the attacked nodes, otherwise we consider the attackers ( way to compute G trasposed )
@@ -210,4 +207,3 @@ stack<DFS_node*> initialize_stack(AF gamma){
 	}
 	return stack;
 }
-

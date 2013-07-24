@@ -139,22 +139,37 @@ SetArguments *AF::get_arguments() const
 	return this->arguments;
 }
 
+/**
+ * @brief 		Create a new AF, with a copy of SetArguments of the AF in input
+ * @param[in] 	AF to copy
+ */
 AF::AF(const AF& gamma){
 	this->arguments=new SetArguments(*gamma.get_arguments());
 }
 
-AF AF::reduceAF( SetArguments I){
+
+/**
+ * @brief 		Method for reduce an AF on a Set of Arguments
+ * @details		The method reduce the SetArguments of this AF, considering only the Arguments which are in the SetArguments I.
+				The suspended attacks are removed from the reduced AF
+ * @param[in] 	The SetArguments which is used to reduce the AF
+ * @retval 		Returns a new AF, the reduced one
+ */
+AF AF::reduceAF(SetArguments I){
 	int index=0;
 	AF *gamma_reduced = new AF();
 	gamma_reduced->arguments = new SetArguments();
 
 	SetArgumentsIterator yt = gamma_reduced->arguments->begin();
 
+	// Iteration on I
 	for(SetArgumentsIterator it = I.begin(); it != I.end(); it++, yt++){
+		// New Argument, which we have to insert in gamma_reduced
 		Argument *toAdd=new Argument(**it, gamma_reduced, index);
 		//cout << "current argument: "<<(*it)->getName()<<endl<<"old af: "<<*(*it)->get_af() <<endl;
 		++index;
 
+		// attacks is the SetArguments which we use to iterate, we remove the suspended attacks from attacks1
 		SetArguments * attacks = new SetArguments(*(*it)->get_attacks());
 		SetArguments * attacks1 = new SetArguments(*(*it)->get_attacks());
 		for(SetArgumentsIterator jt = attacks->begin(); jt != attacks->end(); jt++){
@@ -162,8 +177,10 @@ AF AF::reduceAF( SetArguments I){
 				attacks1->remove(*jt);
 		}
 
+		// set attacks1 as the set of attacks of the argument to add in the reducedAF
 		toAdd->set_attacks(attacks1);
 
+		// the same of attacks
 		SetArguments * attackers = new SetArguments(*(*it)->get_attackers());
 		SetArguments * attackers1 = new SetArguments(*(*it)->get_attackers());
 		for(SetArgumentsIterator jt = attackers->begin(); jt != attackers->end(); jt++){
@@ -173,16 +190,21 @@ AF AF::reduceAF( SetArguments I){
 
 		toAdd->set_attackers(attackers1);
 
+		// add of the new argument in the reducedAF
 		gamma_reduced->arguments->add_Argument(toAdd);
 
 	}
 
+	// iterate on the reduced_AF, necessary to adjust the index number of the new set of Argument 
 	SetArguments * args_gamma = gamma_reduced->get_arguments();
 	for(SetArgumentsIterator it = args_gamma->begin(); it != args_gamma->end(); it++){
+
+		// take the set of attacks based on the old Argument and adjust it with the new Arguments which stay in gamma_reduced
 		SetArguments * attacks = (*it)->get_attacks();
 		SetArguments * new_attacks = attacks->adjust_set(args_gamma);
 		(*it)->set_attacks(new_attacks);
 
+		// the same of attacks
 		SetArguments * attackers = (*it)->get_attackers();
 		SetArguments * new_attackers = attackers->adjust_set(args_gamma);
 		(*it)->set_attackers(new_attackers);
@@ -190,6 +212,10 @@ AF AF::reduceAF( SetArguments I){
 	return *gamma_reduced;
 }
 
+
+/**
+ * @brief 		Method for printing an AF
+ */
 ostream& operator<<(ostream& out, const AF& framework){
 	SetArguments * argomenti=framework.get_arguments();
 	out <<*argomenti<<endl;

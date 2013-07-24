@@ -1,4 +1,4 @@
-/**
+o/**
  * @file 		SetArguments.cpp
  * @class 		SetArguments
  * @brief 		Class encompassing a set of arguments
@@ -121,7 +121,7 @@ bool SetArguments::is_subset(SetArguments *other)
 }
 
 /**
- * @brief Setmisun
+ * @brief Setminus
  * @param[in] other The other term of the subtraction
  * @param[out] res	The result of the subtraction
  * @retval void
@@ -212,6 +212,9 @@ SetArguments::~SetArguments()
 	// TODO Auto-generated destructor stub
 }
 
+/**
+ * @brief Method for printing the SetArguments
+ */
 ostream& operator<<(ostream& out, const SetArguments& r)
 {
 	out << "{";
@@ -244,20 +247,19 @@ void SetArguments::setunion(SetArguments *other, SetArguments *result)
 	}
 }
 
-//correggo gli indici del setArgument (rimanente)
-void SetArguments::adjust_indexes(int last_index){
-	for (SetArgumentsIterator it = this->begin(); it != this->end(); it++){
-		(*it)->set_number(++last_index);
-	}
-}
 
+/**
+ * @brief 		Method for adjust a SetArguments considering the index number of a correct SetArguments
+ * @details		Iteration on this SetArguments, look in set_correct, if there is the Argument we put it as arg_correct in this set
+				if in the correct set there isn't that argument, we create a new one, using as index one that it isn't already used
+ * @param[in]   the SetArguments with the correct Arguments
+ * @retval 		A new adjusted SetArguments 
+ */
 SetArguments * SetArguments::adjust_set(SetArguments * set_correct){
 	SetArguments * new_args = new SetArguments();
 	int cont=0;
 	for(SetArgumentsIterator it = this->begin(); it != this->end(); it++){
 		Argument * arg_correct;
-		cout<<"ciao in for"<<endl;
-		cout<<"it "<<(*it)->getName()<<endl;
 		if(set_correct->exists(*it)){
 			arg_correct = set_correct->getArgumentByName((*it)->getName());
 		}

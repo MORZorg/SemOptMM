@@ -1,5 +1,12 @@
 #include "pref.h"
 
+/**
+ * brief				algorithm used to compute the set of Preferred Extension
+ * @param gamma[in]		the AF in which we are working
+ * @param C[in]			C = A, at the first call. A is the entire set of Arguments.
+ * @retval 				the resulting set of SetArguments
+ */
+
 set<SetArguments*> pref(AF gamma, SetArguments C){
 	set<SetArguments*> Ep = set<SetArguments*>();
 	SetArguments *e=new SetArguments();
@@ -32,10 +39,8 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 	// reduction of gamma with the only nodes which stay in I. Removal of the suspend attacks
 	gamma=gamma.reduceAF(*I);
 
-	//I=I->adjust_set(gamma.get_arguments());
-
 	// Computation of the sequence of SCC which are in gamma, sorted in a topological way
-	list<SCC*> S = SCCSSEQ(gamma);//E' DA VALUTARE SE SIA ORDINATA O NO!!
+	list<SCC*> S = SCCSSEQ(gamma);
 	
 	/*cout << "sequenza SCC"<<endl;
 	list<SCC*>::iterator a;
@@ -118,7 +123,7 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 				Estar = pref(gamma_reduced, *temp2);
 			}
 
-			// cout<< "prima unione" <<endl;
+			// cout<< "before union" <<endl;
 			set<SetArguments*> :: iterator kt;
 
 			if(!Estar.empty()){
@@ -134,7 +139,7 @@ set<SetArguments*> pref(AF gamma, SetArguments C){
 				cout << *e_tmp<<endl;
 				E1p.insert(e_tmp);
 			}
-			// cout<< "dopo unione" <<endl;
+			// cout<< "after union" <<endl;
 		}
 		
 		if(modifica)

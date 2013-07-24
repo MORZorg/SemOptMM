@@ -23,6 +23,12 @@ Argument::Argument(string name, int num, AF *theaf)
 	this->attacks = new SetArguments();
 }
 
+/**
+ *	@brief 				Constructor
+ *	@param[in] argument take the argument name. It **must** be unique
+ *	@param[in] num		A number identifying this argument. It **must** be unique
+ *	@param[in] theaf	The pointer to the Argumentation Framework to which this argument belongs
+ */
 Argument::Argument(Argument argument, AF *gamma, int index)
 {
 	this->name = argument.getName();
@@ -172,6 +178,9 @@ SetArguments *Argument::get_attacks()
 	return this->attacks;
 }
 
+/**
+ * @brief  Setter for the set of attacks
+ */
 void Argument::set_attacks(SetArguments * set)
 {
 	this->attacks=(set);
@@ -186,6 +195,9 @@ SetArguments *Argument::get_attackers()
 	return this->attackers;
 }
 
+/**
+ * @brief  Setter for the set of attackers
+ */
 void Argument::set_attackers(SetArguments * set)
 {
 	this->attackers=(set);
@@ -200,7 +212,10 @@ AF *Argument::get_af()
 	return this->af;
 }
 
+/**
+ * @brief  Setter for the number
+
 void Argument::set_number(int index){
 	this->number=index;
 }
-
+ */

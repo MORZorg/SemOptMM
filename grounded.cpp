@@ -6,12 +6,13 @@
  */
 #include "grounded.h"
 
+
 /**
- * Returns a subset of C containing all nodes that are not attacked from nodes in I
+ * @brief 				get the subset of Arguments of C which are not attacked by Arguments in I
+ * @retval 				the resulting subset
  */
 SetArguments get_not_attacked_nodes(SetArguments C, SetArguments I){
-	//cout << "get_not_attacked_nodes: C "<<C<<endl;
-	//cout << "get_not_attacked_nodes: I "<<I<<endl;
+
 	SetArguments N, intersect, result;
 	SetArguments * attacks;
 	C.clone(&N);
@@ -21,14 +22,16 @@ SetArguments get_not_attacked_nodes(SetArguments C, SetArguments I){
 			if (N.exists((*jt)))
 				N.remove((*jt));
 		}
-		if(N.empty()) break;//improvement :)
+		if(N.empty()) break;
 	}
-	//cout <<"get_not_attacked_nodes_N: "<< N<<endl;
+
 	return N;
 }
 
+
 /**
- * Returns a subset of Set containing all nodes that are attacked from nodes in N
+ * @brief 				get the subset of Arguments of set which are attacked by Arguments in N
+ * @retval 				the resulting subset
  */
 SetArguments get_attacked_from(SetArguments set, SetArguments N){
 	SetArguments intersect,result,tmp;
@@ -43,39 +46,29 @@ SetArguments get_attacked_from(SetArguments set, SetArguments N){
 }
 
 /**
- * to be called with I=A
+ * @brief 				first call I = A
  */
 void grounded(SetArguments C, SetArguments *e, SetArguments *I) {
 	SetArguments N,ANC,ANI,temp;
 	*e = SetArguments();
 
-	//cout << "I: "<<*I<<endl;
 	int iter=0;
 	N=get_not_attacked_nodes(C, *I);
 	while(!N.empty()){
-/*		cout <<"N: "<<N<<endl;
-		cout <<"C: "<<C<<endl;
-		cout <<"I: "<<*I<<endl;
-		cout <<"iter"<<endl;*/
 		e->setunion(&N,e);
 		ANC=get_attacked_from(C,N);
-		//cout <<"ANC intermedio: "<<ANC<<endl;
+
 		ANI=get_attacked_from(*I,N);
-		//cout <<"ANI intermedio: "<<ANI<<endl;
+	
 		N.setunion(&ANC,&temp);
 		C.setminus(&temp,&C);
 		N.setunion(&ANI,&temp);
 		I->setminus(&temp,I);
-		//cout <<"I intermedio: "<<*I<<endl;
+	
 		N=get_not_attacked_nodes(C, *I);
-		cout<<"grounded iter: "<<++iter<<endl;
-		cout<<"e: "<<*e<<endl;
-		cout<<"I: "<<*I<<endl;
+	
+		//cout<<"e: "<<*e<<endl;
+		//cout<<"I: "<<*I<<endl;
 	}
-	/*
-	cout<<"e finale"<<*e<<endl;
-	cout<<"I finale"<<*I<<endl;
-	*/
+
 }
-
-
