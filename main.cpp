@@ -7,6 +7,7 @@
  */
 
 #include "semopt.h"
+#include <time.h>
 
 /**
  * @brief Configuration variables
@@ -28,12 +29,14 @@ time_t start;
 
 int main(int argc, char *argv[]){
 
+
 	//debug = true; // more verbose
 	debug=false;
-	inputfile = string("test-input/test5-medium.dl");
+	inputfile = string("test-input/test5-large.dl");
 	AF gamma = AF();
 	if (!gamma.readFile(inputfile))
 	{
+		cout << "no input file"<<endl;
 		return EXIT_FAILURE;
 	}
 
@@ -43,7 +46,13 @@ int main(int argc, char *argv[]){
 	set<SetArguments*> res;
 
 	vector<OI_pair> OI_pairs = vector<OI_pair>();
+
+	clock_t t;
+	t=clock();
 	res=pref(gamma,*A, &OI_pairs);
+	t=clock()-t;
+	float T = float(t)/CLOCKS_PER_SEC;
+	cout<<"---------------fine:"<<T<<endl;
 
 	cout <<"risultati: "<<endl;
 	set<SetArguments*> :: iterator kt;

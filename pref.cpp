@@ -25,8 +25,15 @@ set<SetArguments*> pref(AF gamma, SetArguments C, vector<OI_pair> * OI_pairs){
 	cout << "e:"<<*e <<endl;
 	cout << "I:"<<*I<<endl;
 
-	if(gamma_C == true && C.cardinality() <= 1);
-	grounded(C,e,I);
+	bool last_opt = false;
+	if(gamma_C == true && C.cardinality() <= 1){
+		last_opt = true;
+		*e=C;
+		I=new SetArguments();
+	}
+	else
+		grounded(C,e,I);
+
 	cout << "grounded:"<<endl;
 	cout << "C:"<<C <<endl;
 	cout << "e:"<<*e <<endl;
@@ -187,7 +194,12 @@ set<SetArguments*> pref(AF gamma, SetArguments C, vector<OI_pair> * OI_pairs){
 					I->intersect(&C, temp2);
 
 					AF gamma_reduced = gamma.reduceAF(*temp);
-					Estar = pref(gamma_reduced, *temp2, OI_pairs);
+
+					if(last_opt){
+						Estar = set<SetArguments*>();
+						Estar.insert(new SetArguments(C));
+					}else
+						Estar = pref(gamma_reduced, *temp2, OI_pairs);
 				}
 
 				//if the OI_pair has been computed for the first time, we insert the OI_pair and the relative Estar in OI_pairs
