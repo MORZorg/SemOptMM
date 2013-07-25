@@ -222,8 +222,8 @@ ostream& operator<<(ostream& out, const SetArguments& r)
 	SetArgumentsIterator it;
 	for (it = r.begin(); it != r.end();)
 	{
-		//out << (*it)->getName();
-		out << (*it)->getName() <<"(#"<<(*it)->getNumber()<<")";
+		out << (*it)->getName();
+		//out << (*it)->getName() <<"(#"<<(*it)->getNumber()<<")";
 		if (++it != r.end())
 			out << " ";
 	}

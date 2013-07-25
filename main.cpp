@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
 
 	//debug = true; // more verbose
 	debug=false;
-	inputfile = string("test-input/esempio3-lucidi.dl");
+	inputfile = string("test-input/test5-medium.dl");
 	AF gamma = AF();
 	if (!gamma.readFile(inputfile))
 	{
